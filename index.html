@@ -66,55 +66,82 @@
   </nav>
 
   <!-- ═══ HERO ═══ -->
-  <section class="hero-gradient islamic-pattern dark:islamic-pattern-dark pt-28 pb-20 md:pt-36 md:pb-28 relative overflow-hidden">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section class="hero-section hero-gradient islamic-pattern dark:islamic-pattern-dark pt-28 pb-20 md:pt-36 md:pb-28 relative overflow-hidden perspective-1000">
+    <!-- Glowing Orbs (Parallax Background) -->
+    <div class="orb-1 absolute top-10 left-10 w-64 h-64 bg-emerald-400/30 dark:bg-emerald-600/20 rounded-full blur-3xl parallax-bg mix-blend-multiply dark:mix-blend-lighten pointer-events-none"></div>
+    <div class="orb-2 absolute bottom-10 right-20 w-80 h-80 bg-amber-400/20 dark:bg-amber-600/10 rounded-full blur-3xl parallax-bg mix-blend-multiply dark:mix-blend-lighten pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="grid md:grid-cols-2 gap-12 items-center">
-        <div class="slide-up">
-          <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 rounded-full text-xs font-semibold mb-6">
+        <!-- Hero Text -->
+        <div>
+          <div class="hero-badge inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 rounded-full text-xs font-semibold mb-6 shadow-sm border border-emerald-200/50 dark:border-emerald-800/50">
             <span>🕌</span> 100% Gratis &middot; Tanpa Registrasi
           </div>
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
-            Kelola Keuanganmu dengan Cara yang <span class="text-gradient">Halal & Berkah</span>
+          <h1 class="hero-title text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
+            <span class="inline-block">Kelola</span> <span class="inline-block">Keuanganmu</span><br>
+            <span class="inline-block">dengan</span> <span class="inline-block">Cara</span> <span class="inline-block">yang</span><br>
+            <span class="inline-block text-gradient">Halal & Berkah</span>
           </h1>
-          <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-xl">
-            Aplikasi keuangan personal yang dirancang sesuai prinsip ekonomi Islam. Bebas riba, bebas israf. Semua data tersimpan di perangkatmu.
+          <p class="hero-desc text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-xl">
+            Aplikasi keuangan personal yang dirancang sesuai prinsip ekonomi Islam. Bebas riba, bebas israf. Semua data tersimpan di perangkatmu secara privat.
           </p>
-          <div class="flex flex-wrap gap-4">
-            <a href="dashboard.html" class="px-8 py-3.5 bg-emerald-600 text-white font-semibold rounded-xl hover:bg-emerald-700 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 inline-flex items-center gap-2">
-              Mulai Gratis Sekarang <span>→</span>
+          <div class="hero-buttons flex flex-wrap gap-4">
+            <a href="dashboard.html" class="group px-8 py-3.5 bg-emerald-600 text-white font-semibold rounded-2xl hover:bg-emerald-700 transition-all shadow-lg hover:shadow-emerald-500/30 hover:-translate-y-1 inline-flex items-center gap-2">
+              Mulai Gratis Sekarang <span class="transition-transform group-hover:translate-x-1">→</span>
             </a>
-            <a href="#fitur" class="px-8 py-3.5 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:border-emerald-500 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all inline-flex items-center gap-2">
+            <a href="#fitur" class="px-8 py-3.5 border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-2xl hover:border-emerald-500 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all shadow-sm hover:shadow-md hover:-translate-y-1 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm">
               Lihat Fitur
             </a>
           </div>
         </div>
-        <!-- Ilustrasi SVG -->
-        <div class="hidden md:flex justify-center fade-in">
-          <svg viewBox="0 0 400 350" class="w-full max-w-md" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Masjid -->
-            <rect x="120" y="180" width="160" height="120" rx="8" fill="#059669" opacity="0.15"/>
-            <rect x="170" y="140" width="60" height="60" rx="30" fill="#059669" opacity="0.2"/>
-            <circle cx="200" cy="130" r="35" fill="#059669" opacity="0.25"/>
-            <rect x="195" y="90" width="10" height="25" fill="#D97706" opacity="0.6"/>
-            <circle cx="200" cy="88" r="5" fill="#D97706" opacity="0.8"/>
-            <!-- Koin -->
-            <circle cx="80" cy="200" r="30" fill="#D97706" opacity="0.2" class="animate-pulse"/>
-            <circle cx="80" cy="200" r="20" fill="#D97706" opacity="0.3"/>
-            <text x="74" y="206" fill="#D97706" font-size="16" font-weight="bold">$</text>
-            <circle cx="320" cy="170" r="25" fill="#059669" opacity="0.2" class="animate-pulse" style="animation-delay:0.5s"/>
-            <circle cx="320" cy="170" r="16" fill="#059669" opacity="0.3"/>
-            <text x="314" y="176" fill="#059669" font-size="14" font-weight="bold">%</text>
-            <!-- Person -->
-            <circle cx="200" cy="230" r="15" fill="#059669" opacity="0.4"/>
-            <rect x="185" y="248" width="30" height="40" rx="8" fill="#059669" opacity="0.3"/>
-            <!-- Stars -->
-            <circle cx="100" cy="120" r="3" fill="#D97706" opacity="0.5"/>
-            <circle cx="300" cy="100" r="2" fill="#D97706" opacity="0.4"/>
-            <circle cx="340" cy="240" r="3" fill="#059669" opacity="0.3"/>
-            <circle cx="60" cy="280" r="2" fill="#059669" opacity="0.4"/>
-            <!-- Chart line -->
-            <polyline points="100,300 150,280 200,260 250,240 300,210 350,190" stroke="#059669" stroke-width="3" opacity="0.3" fill="none" stroke-linecap="round"/>
-          </svg>
+
+        <!-- Hero Visual: Floating Glassmorphism UI -->
+        <div class="hidden md:flex justify-center float-ui-container relative h-[450px] items-center">
+          <!-- Main Dashboard Card -->
+          <div class="float-card-1 relative z-10 w-80 bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl border border-white dark:border-gray-700 shadow-2xl rounded-3xl p-6 transform rotate-y-[-5deg] rotate-x-[5deg]">
+            <div class="flex justify-between items-center mb-6">
+              <div class="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/50 rounded-xl flex items-center justify-center">
+                <span class="text-xl">💰</span>
+              </div>
+              <span class="px-2.5 py-1 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 text-[10px] font-bold rounded-lg border border-emerald-100 dark:border-emerald-800">Syariah Mode</span>
+            </div>
+            <p class="text-sm text-gray-500 dark:text-gray-400 font-medium mb-1">Total Saldo</p>
+            <h3 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-6 tracking-tight">Rp 12.500.000</h3>
+            <div class="space-y-3">
+              <div class="h-12 bg-white dark:bg-gray-900/50 rounded-xl border border-gray-100 dark:border-gray-700 flex items-center px-3 gap-3">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 flex items-center justify-center text-xs">📈</div>
+                <div class="flex-1"><div class="h-2 w-16 bg-gray-200 dark:bg-gray-700 rounded-full mb-1"></div><div class="h-1.5 w-10 bg-gray-100 dark:bg-gray-800 rounded-full"></div></div>
+                <div class="text-xs font-bold text-emerald-500">+Rp 3M</div>
+              </div>
+              <div class="h-12 bg-white dark:bg-gray-900/50 rounded-xl border border-gray-100 dark:border-gray-700 flex items-center px-3 gap-3">
+                <div class="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-900/40 text-red-500 flex items-center justify-center text-xs">📉</div>
+                <div class="flex-1"><div class="h-2 w-16 bg-gray-200 dark:bg-gray-700 rounded-full mb-1"></div><div class="h-1.5 w-10 bg-gray-100 dark:bg-gray-800 rounded-full"></div></div>
+                <div class="text-xs font-bold text-red-500">-Rp 1M</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Floating Zakat Badge -->
+          <div class="float-badge absolute top-10 right-4 z-20 bg-amber-500 text-white px-4 py-3 rounded-2xl shadow-xl border border-amber-400 flex items-center gap-3 transform rotate-[5deg]">
+            <span class="text-2xl">🕌</span>
+            <div>
+              <p class="text-[10px] font-bold uppercase tracking-wide opacity-90">Kewajiban Zakat</p>
+              <p class="text-sm font-extrabold">Rp 312.500</p>
+            </div>
+          </div>
+
+          <!-- Floating Chart Card -->
+          <div class="float-card-2 absolute bottom-12 -left-8 z-20 w-48 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md border border-white dark:border-gray-700 shadow-xl rounded-2xl p-4">
+            <p class="text-xs font-bold text-gray-800 dark:text-gray-200 mb-3">Investasi Halal</p>
+            <div class="flex items-end gap-1.5 h-16 w-full">
+              <div class="w-1/5 bg-emerald-200 dark:bg-emerald-900/40 rounded-t-sm h-[40%]"></div>
+              <div class="w-1/5 bg-emerald-300 dark:bg-emerald-800/50 rounded-t-sm h-[60%]"></div>
+              <div class="w-1/5 bg-emerald-400 dark:bg-emerald-700/60 rounded-t-sm h-[50%]"></div>
+              <div class="w-1/5 bg-emerald-500 dark:bg-emerald-600/80 rounded-t-sm h-[80%]"></div>
+              <div class="w-1/5 bg-emerald-600 rounded-t-sm h-[100%] shadow-[0_0_10px_rgba(5,150,105,0.5)]"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -127,27 +154,30 @@
         <h2 class="text-3xl md:text-4xl font-bold mb-4">Fitur Unggulan</h2>
         <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Semua yang kamu butuhkan untuk mengelola keuangan sesuai syariah, dalam satu aplikasi.</p>
       </div>
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- Feature 1 -->
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm card-hover border border-gray-100 dark:border-gray-700">
-          <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/40 rounded-xl flex items-center justify-center text-2xl mb-4">🕌</div>
-          <h3 class="text-lg font-bold mb-2">Kalkulator Zakat Otomatis</h3>
-          <p class="text-sm text-gray-600 dark:text-gray-400">Hitung zakat maal dan penghasilan secara otomatis berdasarkan nishab emas. Sesuai fatwa MUI.</p>
+        <div class="fitur-card bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-gray-100 dark:border-gray-700/60 relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-bl-full -z-10 group-hover:scale-110 transition-transform duration-500"></div>
+          <div class="w-14 h-14 bg-gradient-to-br from-emerald-100 to-emerald-50 dark:from-emerald-900/40 dark:to-emerald-800/20 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-inner border border-emerald-100/50 dark:border-emerald-700/30">🕌</div>
+          <h3 class="text-xl font-bold mb-3">Kalkulator Zakat Otomatis</h3>
+          <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Hitung zakat maal dan penghasilan secara otomatis berdasarkan nishab emas real-time. Sesuai fatwa MUI.</p>
         </div>
         <!-- Feature 2 -->
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm card-hover border border-gray-100 dark:border-gray-700">
-          <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/40 rounded-xl flex items-center justify-center text-2xl mb-4">✅</div>
-          <h3 class="text-lg font-bold mb-2">Label Halal / Syubhat / Haram</h3>
-          <p class="text-sm text-gray-600 dark:text-gray-400">Tandai setiap transaksi dengan label syariah. Pantau kesehatan keuangan spiritualmu.</p>
+        <div class="fitur-card bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-gray-100 dark:border-gray-700/60 relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-bl-full -z-10 group-hover:scale-110 transition-transform duration-500"></div>
+          <div class="w-14 h-14 bg-gradient-to-br from-amber-100 to-amber-50 dark:from-amber-900/40 dark:to-amber-800/20 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-inner border border-amber-100/50 dark:border-amber-700/30">✅</div>
+          <h3 class="text-xl font-bold mb-3">Label Halal / Syubhat / Haram</h3>
+          <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Tandai setiap pengeluaran dengan label syariah. Audit pengeluaranmu demi kesehatan spiritual.</p>
         </div>
         <!-- Feature 3 -->
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm card-hover border border-gray-100 dark:border-gray-700">
-          <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/40 rounded-xl flex items-center justify-center text-2xl mb-4">🎯</div>
-          <h3 class="text-lg font-bold mb-2">Goal Keuangan Islami</h3>
-          <p class="text-sm text-gray-600 dark:text-gray-400">Tabung untuk umroh, sedekah, dana darurat, dan lainnya dengan tracking progress real-time.</p>
+        <div class="fitur-card bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-gray-100 dark:border-gray-700/60 relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-bl-full -z-10 group-hover:scale-110 transition-transform duration-500"></div>
+          <div class="w-14 h-14 bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/40 dark:to-blue-800/20 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-inner border border-blue-100/50 dark:border-blue-700/30">🎯</div>
+          <h3 class="text-xl font-bold mb-3">Goal Keuangan Islami</h3>
+          <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Tabung untuk umroh, dana kurban, sedekah bulanan dengan tracking progress visual yang indah.</p>
         </div>
         <!-- Feature 4 -->
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm card-hover border border-gray-100 dark:border-gray-700">
+        <div class="fitur-card bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-gray-100 dark:border-gray-700/60 relative overflow-hidden group">
           <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/40 rounded-xl flex items-center justify-center text-2xl mb-4">📊</div>
           <h3 class="text-lg font-bold mb-2">Laporan & Analisis</h3>
           <p class="text-sm text-gray-600 dark:text-gray-400">Grafik interaktif pemasukan vs pengeluaran. Breakdown kategori dan tren bulanan.</p>
@@ -251,10 +281,15 @@
         </div>
       </div>
       <div class="mt-10 pt-6 border-t border-gray-200 dark:border-gray-700 text-center text-sm text-gray-500 dark:text-gray-400">
-        &copy; 2024 KeuanganSyariah.id — بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
+        &copy; 2024 KeuanganSyariah.id. All rights reserved.
       </div>
     </div>
   </footer>
+
+  <!-- GSAP & Animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="js/landing.js"></script>
 
   <script src="js/storage.js"></script>
   <script src="js/app.js"></script>

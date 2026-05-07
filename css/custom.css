@@ -209,12 +209,25 @@ input[type="number"] { -moz-appearance: textfield; }
   background-clip: text;
 }
 
-/* ── Hero Gradient ───────────────────────────────────────── */
+/* ── Hero Gradient & Glowing Orbs ──────────────────────────── */
 .hero-gradient {
   background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 50%, #fffbeb 100%);
 }
 .dark .hero-gradient {
   background: linear-gradient(135deg, #022c22 0%, #052e16 50%, #1c1917 100%);
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.orb-1, .orb-2 {
+  mix-blend-mode: multiply;
+  filter: blur(80px);
+  will-change: transform;
+}
+.dark .orb-1, .dark .orb-2 {
+  mix-blend-mode: lighten;
 }
 
 /* ── Responsive Sidebar ──────────────────────────────────── */
