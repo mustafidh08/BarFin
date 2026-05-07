@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id" class="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KeuanganSyariah.id — Kelola Keuangan dengan Cara Halal & Berkah</title>
+  <meta name="description" content="Aplikasi keuangan personal berbasis prinsip ekonomi Islam. Kalkulator zakat, investasi syariah, label halal, dan edukasi keuangan islami. Bebas riba, bebas israf.">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#059669">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            emerald: { 600: '#059669', 700: '#047857' },
+            amber: { 500: '#D97706' }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            amiri: ['Amiri', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/custom.css">
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+  <!-- ═══ NAVBAR ═══ -->
+  <nav id="landing-nav" class="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-gray-200/50 dark:border-gray-700/50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-2 group">
+          <div class="w-9 h-9 bg-emerald-600 rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform">
+            <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c1.73 0 3.36-.44 4.78-1.22C14.08 19.1 12 16.27 12 13c0-3.87 2.83-7.08 6.53-7.67A9.96 9.96 0 0012 2zm3.5 5.5l.5 1.5 1.5.5-1.5.5-.5 1.5-.5-1.5L13 9.5l1.5-.5.5-1.5z"/>
+            </svg>
+          </div>
+          <span class="text-lg font-bold text-gray-900 dark:text-white">KeuanganSyariah<span class="text-emerald-600">.id</span></span>
+        </a>
+        <!-- Nav Links (Desktop) -->
+        <div class="hidden md:flex items-center gap-8">
+          <a href="#fitur" class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition">Fitur</a>
+          <a href="#tentang" class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition">Tentang</a>
+          <button data-toggle-dark class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+            <span data-dark-icon class="text-lg">🌙</span>
+          </button>
+          <a href="pengaturan.html" class="text-sm font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 transition">Login</a>
+          <a href="dashboard.html" class="px-5 py-2.5 bg-emerald-600 text-white text-sm font-semibold rounded-xl hover:bg-emerald-700 transition-colors shadow-sm hover:shadow-md">Mulai Gratis</a>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="flex md:hidden items-center gap-2">
+          <button data-toggle-dark class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+            <span data-dark-icon class="text-lg">🌙</span>
+          </button>
+          <a href="pengaturan.html" class="text-sm font-bold text-emerald-600 dark:text-emerald-400">Login</a>
+          <a href="dashboard.html" class="px-4 py-2 bg-emerald-600 text-white text-sm font-semibold rounded-xl">Mulai</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero-gradient islamic-pattern dark:islamic-pattern-dark pt-28 pb-20 md:pt-36 md:pb-28 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div class="slide-up">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 rounded-full text-xs font-semibold mb-6">
+            <span>🕌</span> 100% Gratis &middot; Tanpa Registrasi
+          </div>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
+            Kelola Keuanganmu dengan Cara yang <span class="text-gradient">Halal & Berkah</span>
+          </h1>
+          <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-xl">
+            Aplikasi keuangan personal yang dirancang sesuai prinsip ekonomi Islam. Bebas riba, bebas israf. Semua data tersimpan di perangkatmu.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <a href="dashboard.html" class="px-8 py-3.5 bg-emerald-600 text-white font-semibold rounded-xl hover:bg-emerald-700 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 inline-flex items-center gap-2">
+              Mulai Gratis Sekarang <span>→</span>
+            </a>
+            <a href="#fitur" class="px-8 py-3.5 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:border-emerald-500 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all inline-flex items-center gap-2">
+              Lihat Fitur
+            </a>
+          </div>
+        </div>
+        <!-- Ilustrasi SVG -->
+        <div class="hidden md:flex justify-center fade-in">
+          <svg viewBox="0 0 400 350" class="w-full max-w-md" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Masjid -->
+            <rect x="120" y="180" width="160" height="120" rx="8" fill="#059669" opacity="0.15"/>
+            <rect x="170" y="140" width="60" height="60" rx="30" fill="#059669" opacity="0.2"/>
+            <circle cx="200" cy="130" r="35" fill="#059669" opacity="0.25"/>
+            <rect x="195" y="90" width="10" height="25" fill="#D97706" opacity="0.6"/>
+            <circle cx="200" cy="88" r="5" fill="#D97706" opacity="0.8"/>
+            <!-- Koin -->
+            <circle cx="80" cy="200" r="30" fill="#D97706" opacity="0.2" class="animate-pulse"/>
+            <circle cx="80" cy="200" r="20" fill="#D97706" opacity="0.3"/>
+            <text x="74" y="206" fill="#D97706" font-size="16" font-weight="bold">$</text>
+            <circle cx="320" cy="170" r="25" fill="#059669" opacity="0.2" class="animate-pulse" style="animation-delay:0.5s"/>
+            <circle cx="320" cy="170" r="16" fill="#059669" opacity="0.3"/>
+            <text x="314" y="176" fill="#059669" font-size="14" font-weight="bold">%</text>
+            <!-- Person -->
+            <circle cx="200" cy="230" r="15" fill="#059669" opacity="0.4"/>
+            <rect x="185" y="248" width="30" height="40" rx="8" fill="#059669" opacity="0.3"/>
+            <!-- Stars -->
+            <circle cx="100" cy="120" r="3" fill="#D97706" opacity="0.5"/>
+            <circle cx="300" cy="100" r="2" fill="#D97706" opacity="0.4"/>
+            <circle cx="340" cy="240" r="3" fill="#059669" opacity="0.3"/>
+            <circle cx="60" cy="280" r="2" fill="#059669" opacity="0.4"/>
+            <!-- Chart line -->
+            <polyline points="100,300 150,280 200,260 250,240 300,210 350,190" stroke="#059669" stroke-width="3" opacity="0.3" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FITUR UNGGULAN ═══ -->
+  <section id="fitur" class="py-20 bg-gray-50 dark:bg-gray-800/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Fitur Unggulan</h2>
+        <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Semua yang kamu butuhkan untuk mengelola keuangan sesuai syariah, dalam satu aplikasi.</p>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">
+        <!-- Feature 1 -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm card-hover border border-gray-100 dark:border-gray-700">
+          <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/40 rounded-xl flex items-center justify-center text-2xl mb-4">🕌</div>
+          <h3 class="text-lg font-bold mb-2">Kalkulator Zakat Otomatis</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Hitung zakat maal dan penghasilan secara otomatis berdasarkan nishab emas. Sesuai fatwa MUI.</p>
+        </div>
+        <!-- Feature 2 -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm card-hover border border-gray-100 dark:border-gray-700">
+          <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/40 rounded-xl flex items-center justify-center text-2xl mb-4">✅</div>
+          <h3 class="text-lg font-bold mb-2">Label Halal / Syubhat / Haram</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Tandai setiap transaksi dengan label syariah. Pantau kesehatan keuangan spiritualmu.</p>
+        </div>
+        <!-- Feature 3 -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm card-hover border border-gray-100 dark:border-gray-700">
+          <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/40 rounded-xl flex items-center justify-center text-2xl mb-4">🎯</div>
+          <h3 class="text-lg font-bold mb-2">Goal Keuangan Islami</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Tabung untuk umroh, sedekah, dana darurat, dan lainnya dengan tracking progress real-time.</p>
+        </div>
+        <!-- Feature 4 -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm card-hover border border-gray-100 dark:border-gray-700">
+          <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/40 rounded-xl flex items-center justify-center text-2xl mb-4">📊</div>
+          <h3 class="text-lg font-bold mb-2">Laporan & Analisis</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Grafik interaktif pemasukan vs pengeluaran. Breakdown kategori dan tren bulanan.</p>
+        </div>
+        <!-- Feature 5 -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm card-hover border border-gray-100 dark:border-gray-700">
+          <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/40 rounded-xl flex items-center justify-center text-2xl mb-4">📚</div>
+          <h3 class="text-lg font-bold mb-2">Edukasi Ekonomi Syariah</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Artikel lengkap tentang riba, gharar, zakat, dan investasi halal. Dilengkapi dalil.</p>
+        </div>
+        <!-- Feature 6 -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm card-hover border border-gray-100 dark:border-gray-700">
+          <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/40 rounded-xl flex items-center justify-center text-2xl mb-4">📈</div>
+          <h3 class="text-lg font-bold mb-2">Rekomendasi Investasi Syariah</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Quiz profil risiko + rekomendasi instrumen sesuai kemampuan dan prinsip syariah.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ QUOTE SECTION ═══ -->
+  <section class="py-20 bg-emerald-900 text-white relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <svg class="w-full h-full" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <pattern id="star-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M20 5l2.5 7.5H30l-6 4.5 2.3 7-6.3-4.5L13.7 24l2.3-7-6-4.5h7.5z" fill="white" opacity="0.15"/>
+        </pattern>
+        <rect width="100%" height="100%" fill="url(#star-pattern)"/>
+      </svg>
+    </div>
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+      <p class="font-amiri text-3xl md:text-4xl leading-relaxed mb-6 text-emerald-100" dir="rtl">
+        مَّثَلُ الَّذِينَ يُنفِقُونَ أَمْوَالَهُمْ فِي سَبِيلِ اللَّهِ كَمَثَلِ حَبَّةٍ أَنبَتَتْ سَبْعَ سَنَابِلَ فِي كُلِّ سُنبُلَةٍ مِّائَةُ حَبَّةٍ
+      </p>
+      <p class="text-lg md:text-xl text-emerald-200 mb-4 max-w-2xl mx-auto">
+        "Perumpamaan orang yang menginfakkan hartanya di jalan Allah seperti sebutir biji yang menumbuhkan tujuh tangkai, pada setiap tangkai ada seratus biji."
+      </p>
+      <p class="text-emerald-400 font-semibold">— QS. Al-Baqarah: 261</p>
+    </div>
+  </section>
+
+  <!-- ═══ CARA KERJA ═══ -->
+  <section id="tentang" class="py-20 bg-white dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Cara Kerja</h2>
+        <p class="text-gray-600 dark:text-gray-400">Empat langkah menuju keuangan yang lebih berkah</p>
+      </div>
+      <div class="grid md:grid-cols-4 gap-8">
+        <div class="text-center group">
+          <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/40 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 group-hover:scale-110 transition-transform">1️⃣</div>
+          <h3 class="font-bold mb-2">Daftar & Setup</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Tanpa registrasi. Cukup buka dan mulai.</p>
+        </div>
+        <div class="text-center group">
+          <div class="w-16 h-16 bg-amber-100 dark:bg-amber-900/40 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 group-hover:scale-110 transition-transform">2️⃣</div>
+          <h3 class="font-bold mb-2">Isi Quiz Profil Risiko</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">5 menit untuk tahu gaya investasimu.</p>
+        </div>
+        <div class="text-center group">
+          <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/40 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 group-hover:scale-110 transition-transform">3️⃣</div>
+          <h3 class="font-bold mb-2">Catat Transaksi</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Label halal/syubhat/haram tiap transaksi.</p>
+        </div>
+        <div class="text-center group">
+          <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/40 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 group-hover:scale-110 transition-transform">4️⃣</div>
+          <h3 class="font-bold mb-2">Pantau & Berkah</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Dashboard analisis & rekomendasi.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-3 gap-8">
+        <div>
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center">
+              <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c1.73 0 3.36-.44 4.78-1.22C14.08 19.1 12 16.27 12 13c0-3.87 2.83-7.08 6.53-7.67A9.96 9.96 0 0012 2z"/></svg>
+            </div>
+            <span class="font-bold text-gray-900 dark:text-white">KeuanganSyariah.id</span>
+          </div>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Dibuat dengan niat baik untuk membantu umat mengelola keuangan sesuai syariah.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-3 text-gray-900 dark:text-white">Navigasi</h4>
+          <div class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+            <a href="dashboard.html" class="block hover:text-emerald-600 transition">Dashboard</a>
+            <a href="transaksi.html" class="block hover:text-emerald-600 transition">Transaksi</a>
+            <a href="zakat.html" class="block hover:text-emerald-600 transition">Zakat</a>
+            <a href="goals.html" class="block hover:text-emerald-600 transition">Goals</a>
+            <a href="investasi.html" class="block hover:text-emerald-600 transition">Investasi</a>
+            <a href="edukasi.html" class="block hover:text-emerald-600 transition">Edukasi</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-3 text-gray-900 dark:text-white">Privasi</h4>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Semua data tersimpan 100% di perangkatmu. Tidak ada data yang dikirim ke server manapun.</p>
+        </div>
+      </div>
+      <div class="mt-10 pt-6 border-t border-gray-200 dark:border-gray-700 text-center text-sm text-gray-500 dark:text-gray-400">
+        &copy; 2024 KeuanganSyariah.id — بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    // Init dark mode untuk landing page
+    document.addEventListener('DOMContentLoaded', () => {
+      initDarkMode();
+    });
+  </script>
+</body>
+</html>

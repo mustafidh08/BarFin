@@ -1,0 +1,228 @@
+/* ============================================================
+   custom.css — Design tokens, animasi, dan override Tailwind
+   ============================================================ */
+
+/* ── Google Fonts ─────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&display=swap');
+
+/* ── Base ─────────────────────────────────────────────────── */
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-amiri {
+  font-family: 'Amiri', serif;
+}
+
+/* ── Islamic Pattern Background ──────────────────────────── */
+.islamic-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23059669' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.islamic-pattern-dark {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2310b981' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ── Toast Animations ────────────────────────────────────── */
+.toast-enter {
+  animation: toastSlideIn 0.3s ease-out;
+}
+
+.toast-exit {
+  animation: toastSlideOut 0.3s ease-in forwards;
+}
+
+@keyframes toastSlideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes toastSlideOut {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(100%); opacity: 0; }
+}
+
+/* ── Progress Bar Animation ──────────────────────────────── */
+.progress-bar-fill {
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Confetti (CSS only) ─────────────────────────────────── */
+.confetti-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  animation: confettiFall 2.5s ease-in forwards;
+}
+
+@keyframes confettiFall {
+  0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(400px) rotate(720deg); opacity: 0; }
+}
+
+/* ── Card Hover ──────────────────────────────────────────── */
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* ── Pill Toggle ─────────────────────────────────────────── */
+.pill-toggle input[type="radio"]:checked + label {
+  color: white;
+}
+.pill-toggle-pemasukan input[type="radio"]:checked + label {
+  background-color: #059669;
+}
+.pill-toggle-pengeluaran input[type="radio"]:checked + label {
+  background-color: #dc2626;
+}
+
+/* ── Glassmorphism Navbar ────────────────────────────────── */
+.glass-nav {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.dark .glass-nav {
+  background: rgba(17, 24, 39, 0.85);
+}
+
+/* ── Syariah Label Colors ────────────────────────────────── */
+.label-halal { background-color: #d1fae5; color: #065f46; }
+.dark .label-halal { background-color: rgba(6, 95, 70, 0.3); color: #6ee7b7; }
+
+.label-syubhat { background-color: #fef3c7; color: #92400e; }
+.dark .label-syubhat { background-color: rgba(146, 64, 14, 0.3); color: #fcd34d; }
+
+.label-haram { background-color: #fee2e2; color: #991b1b; }
+.dark .label-haram { background-color: rgba(153, 27, 27, 0.3); color: #fca5a5; }
+
+/* ── Scrollbar Styling ───────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+.dark ::-webkit-scrollbar-thumb { background: #4b5563; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+
+/* ── Skeleton Pulse ──────────────────────────────────────── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ── Number Input — hide spinner ─────────────────────────── */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] { -moz-appearance: textfield; }
+
+/* ── Quiz Card Selection ─────────────────────────────────── */
+.quiz-option {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.quiz-option:hover {
+  border-color: #059669;
+  background-color: #ecfdf5;
+}
+.dark .quiz-option:hover {
+  border-color: #10b981;
+  background-color: rgba(16, 185, 129, 0.1);
+}
+.quiz-option.selected {
+  border-color: #059669;
+  background-color: #d1fae5;
+  box-shadow: 0 0 0 2px #059669;
+}
+.dark .quiz-option.selected {
+  border-color: #10b981;
+  background-color: rgba(16, 185, 129, 0.15);
+  box-shadow: 0 0 0 2px #10b981;
+}
+
+/* ── Step Indicator ──────────────────────────────────────── */
+.step-line {
+  height: 2px;
+  background: linear-gradient(to right, #059669 var(--progress, 0%), #e5e7eb var(--progress, 0%));
+}
+.dark .step-line {
+  background: linear-gradient(to right, #10b981 var(--progress, 0%), #374151 var(--progress, 0%));
+}
+
+/* ── Fade In Animation ───────────────────────────────────── */
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Slide Up Animation ──────────────────────────────────── */
+.slide-up {
+  animation: slideUp 0.6s ease-out;
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Staggered Children Animation ────────────────────────── */
+.stagger-children > * {
+  opacity: 0;
+  animation: fadeIn 0.4s ease-out forwards;
+}
+.stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.3s; }
+
+/* ── Gradient Text ───────────────────────────────────────── */
+.text-gradient {
+  background: linear-gradient(135deg, #059669, #0ea5e9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, #d97706, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Hero Gradient ───────────────────────────────────────── */
+.hero-gradient {
+  background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 50%, #fffbeb 100%);
+}
+.dark .hero-gradient {
+  background: linear-gradient(135deg, #022c22 0%, #052e16 50%, #1c1917 100%);
+}
+
+/* ── Responsive Sidebar ──────────────────────────────────── */
+@media (max-width: 767px) {
+  #sidebar { display: none !important; }
+  #bottom-nav { display: flex !important; }
+  .main-content { margin-left: 0 !important; padding-bottom: 5rem !important; }
+}
+@media (min-width: 768px) {
+  #bottom-nav { display: none !important; }
+}

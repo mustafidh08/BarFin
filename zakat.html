@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator Zakat — KeuanganSyariah.id</title>
+  <meta name="description" content="Hitung zakat maal dan zakat penghasilan otomatis berdasarkan nishab emas. Sesuai syariah Islam.">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#059669">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Plus Jakarta Sans','sans-serif'],amiri:['Amiri','serif']}}}}</script>
+  <link rel="stylesheet" href="css/custom.css">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
+  <aside id="sidebar" class="fixed left-0 top-0 bottom-0 w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col z-40 overflow-y-auto"></aside>
+
+  <main class="main-content md:ml-64 p-4 md:p-8 pb-24">
+    <h1 class="text-2xl md:text-3xl font-bold mb-6">Kalkulator Zakat</h1>
+
+    <!-- Tabs -->
+    <div class="flex bg-gray-100 dark:bg-gray-800 rounded-xl p-1 mb-6 max-w-md">
+      <button id="tab-maal" onclick="switchTab('maal')" class="flex-1 py-2.5 text-sm font-semibold rounded-lg bg-white dark:bg-gray-700 shadow-sm transition">Zakat Maal</button>
+      <button id="tab-penghasilan" onclick="switchTab('penghasilan')" class="flex-1 py-2.5 text-sm font-semibold rounded-lg text-gray-500 transition">Zakat Penghasilan</button>
+    </div>
+
+    <!-- Zakat Maal Panel -->
+    <div id="panel-maal">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 mb-6">
+        <h3 class="font-bold mb-2">Zakat Maal (Harta)</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-5">Zakat maal wajib bagi yang hartanya mencapai nishab (setara 85 gram emas) dan sudah melewati haul (1 tahun hijriyah).</p>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium mb-1">Uang Tunai & Tabungan</label>
+            <input id="zakat-tunai" type="text" placeholder="0" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-emerald-500 outline-none transition font-mono text-right" oninput="formatZakatInput(this)">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Emas & Perak (dalam Rupiah)</label>
+            <input id="zakat-emas" type="text" placeholder="0" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-emerald-500 outline-none transition font-mono text-right" oninput="formatZakatInput(this)">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Hasil Investasi</label>
+            <input id="zakat-investasi" type="text" placeholder="0" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-emerald-500 outline-none transition font-mono text-right" oninput="formatZakatInput(this)">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Piutang yang Bisa Ditagih</label>
+            <input id="zakat-piutang" type="text" placeholder="0" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-emerald-500 outline-none transition font-mono text-right" oninput="formatZakatInput(this)">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Stok Barang Dagangan</label>
+            <input id="zakat-dagangan" type="text" placeholder="0" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-emerald-500 outline-none transition font-mono text-right" oninput="formatZakatInput(this)">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1 text-red-600 dark:text-red-400">Hutang yang Harus Dibayar (dikurangkan)</label>
+            <input id="zakat-hutang" type="text" placeholder="0" class="w-full px-4 py-3 rounded-xl border border-red-300 dark:border-red-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-red-500 outline-none transition font-mono text-right" oninput="formatZakatInput(this)">
+          </div>
+        </div>
+        <button onclick="hitungZakatMaal()" class="w-full mt-5 py-3 bg-emerald-600 text-white font-semibold rounded-xl hover:bg-emerald-700 transition">🧮 Hitung Zakat Maal</button>
+      </div>
+      <div id="hasil-zakat-maal"></div>
+    </div>
+
+    <!-- Zakat Penghasilan Panel -->
+    <div id="panel-penghasilan" class="hidden">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 mb-6">
+        <h3 class="font-bold mb-2">Zakat Penghasilan</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Dihitung otomatis dari total pemasukan bulan ini yang tercatat di aplikasi.</p>
+        <button onclick="hitungZakatPenghasilan()" class="w-full py-3 bg-emerald-600 text-white font-semibold rounded-xl hover:bg-emerald-700 transition">🧮 Hitung Zakat Penghasilan</button>
+      </div>
+      <div id="hasil-zakat-penghasilan"></div>
+    </div>
+
+    <!-- Riwayat Zakat -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 mt-6 mb-6">
+      <h3 class="font-bold mb-4">Riwayat Perhitungan Zakat</h3>
+      <div id="riwayat-zakat"></div>
+    </div>
+
+    <!-- Info Panel -->
+    <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl p-6 border border-emerald-100 dark:border-emerald-800/30">
+      <p class="font-amiri text-xl text-emerald-800 dark:text-emerald-200 mb-3 text-right" dir="rtl">خُذۡ مِنۡ أَمۡوَٰلِهِمۡ صَدَقَةٗ تُطَهِّرُهُمۡ وَتُزَكِّيهِم بِهَا</p>
+      <p class="text-sm text-emerald-700 dark:text-emerald-300 italic mb-2">"Ambillah zakat dari sebagian harta mereka, dengan zakat itu kamu membersihkan dan menyucikan mereka."</p>
+      <p class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold mb-4">— QS. At-Taubah: 103</p>
+      <div class="flex flex-wrap gap-2">
+        <a href="https://baznas.go.id" target="_blank" class="text-xs px-3 py-1.5 bg-emerald-100 dark:bg-emerald-800/40 text-emerald-700 dark:text-emerald-300 rounded-full hover:opacity-80 transition">🔗 Baznas</a>
+        <a href="https://www.dompetdhuafa.org" target="_blank" class="text-xs px-3 py-1.5 bg-emerald-100 dark:bg-emerald-800/40 text-emerald-700 dark:text-emerald-300 rounded-full hover:opacity-80 transition">🔗 Dompet Dhuafa</a>
+      </div>
+    </div>
+  </main>
+
+  <nav id="bottom-nav" class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-around items-center h-16 z-40 md:hidden"></nav>
+
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/zakat.js"></script>
+  <script>
+    function switchTab(tab) {
+      const maalBtn = document.getElementById('tab-maal');
+      const pengBtn = document.getElementById('tab-penghasilan');
+      const maalPanel = document.getElementById('panel-maal');
+      const pengPanel = document.getElementById('panel-penghasilan');
+      if (tab === 'maal') {
+        maalBtn.className = 'flex-1 py-2.5 text-sm font-semibold rounded-lg bg-white dark:bg-gray-700 shadow-sm transition';
+        pengBtn.className = 'flex-1 py-2.5 text-sm font-semibold rounded-lg text-gray-500 transition';
+        maalPanel.classList.remove('hidden');
+        pengPanel.classList.add('hidden');
+      } else {
+        pengBtn.className = 'flex-1 py-2.5 text-sm font-semibold rounded-lg bg-white dark:bg-gray-700 shadow-sm transition';
+        maalBtn.className = 'flex-1 py-2.5 text-sm font-semibold rounded-lg text-gray-500 transition';
+        pengPanel.classList.remove('hidden');
+        maalPanel.classList.add('hidden');
+      }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      renderRiwayatZakat();
+    });
+  </script>
+</body>
+</html>

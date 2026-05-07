@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Investasi Syariah — KeuanganSyariah.id</title>
+  <meta name="description" content="Quiz profil risiko, rekomendasi investasi syariah, harga saham live, dan simulasi investasi.">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#059669">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Plus Jakarta Sans','sans-serif'],amiri:['Amiri','serif']}}}}</script>
+  <link rel="stylesheet" href="css/custom.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
+  <aside id="sidebar" class="fixed left-0 top-0 bottom-0 w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col z-40 overflow-y-auto"></aside>
+
+  <main class="main-content md:ml-64 p-4 md:p-8 pb-24">
+    <h1 class="text-2xl md:text-3xl font-bold mb-6">Investasi Syariah</h1>
+
+    <div class="grid lg:grid-cols-4 gap-6">
+      <div class="lg:col-span-3">
+        <!-- Quiz / Hasil -->
+        <div id="quiz-container"></div>
+        <!-- Rekomendasi -->
+        <div id="rekomendasi-container" class="mt-6"></div>
+
+        <!-- Harga Saham Live -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-700 mt-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-bold">Harga Saham Syariah (JII)</h3>
+            <button onclick="refreshHargaSaham()" class="px-3 py-1.5 text-xs font-medium border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition" id="btn-refresh-saham">🔄 Refresh</button>
+          </div>
+          <div id="saham-list" class="space-y-2"></div>
+          <p class="text-[10px] text-gray-400 mt-4">✅ Terdaftar DES OJK — Periode ${typeof DES_METADATA !== 'undefined' ? DES_METADATA.periode : 'II/2024'} | Update berikutnya: Mei 2025</p>
+        </div>
+
+        <!-- Simulasi Investasi -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-700 mt-6">
+          <h3 class="font-bold mb-4">Simulasi Investasi</h3>
+          <div class="grid md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-sm font-medium mb-1">Modal Investasi</label>
+              <input type="range" id="sim-modal" min="100000" max="50000000" step="100000" value="5000000" class="w-full accent-emerald-600" oninput="updateSimulasi()">
+              <p class="text-sm font-mono text-emerald-600 dark:text-emerald-400 mt-1" id="sim-modal-label">Rp 5.000.000</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Durasi (tahun)</label>
+              <input type="range" id="sim-durasi" min="1" max="30" value="10" class="w-full accent-emerald-600" oninput="updateSimulasi()">
+              <p class="text-sm font-mono text-emerald-600 dark:text-emerald-400 mt-1" id="sim-durasi-label">10 tahun</p>
+            </div>
+          </div>
+          <div class="h-64"><canvas id="chart-simulasi"></canvas></div>
+          <div id="sim-summary" class="grid grid-cols-3 gap-3 mt-4"></div>
+          <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-3 mt-4 text-[10px] text-gray-500 dark:text-gray-400">
+            ⚠️ Simulasi bersifat ilustratif berdasarkan data historis. Return masa lalu tidak menjamin hasil masa depan. Investasi selalu mengandung risiko kehilangan modal. Bukan saran investasi profesional.
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Status Profil -->
+      <div class="lg:col-span-1">
+        <div id="profil-sidebar"></div>
+      </div>
+    </div>
+  </main>
+
+  <nav id="bottom-nav" class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-around items-center h-16 z-40 md:hidden"></nav>
+
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/data/saham-syariah.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/investasi.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderInvestasiPage();
+      loadHargaSaham();
+      updateSimulasi();
+      // Auto-scroll ke quiz jika hash
+      if (window.location.hash === '#quiz') {
+        setTimeout(() => document.getElementById('quiz-container')?.scrollIntoView({behavior:'smooth'}), 300);
+      }
+    });
+
+    const TOP_SAHAM = ['BBRI','BBCA','TLKM','ASII','ICBP','SIDO','KLBF','BRIS'];
+
+    async function loadHargaSaham() {
+      const container = document.getElementById('saham-list');
+      container.innerHTML = Array(TOP_SAHAM.length).fill('<div class="h-12 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse"></div>').join('');
+
+      for (const kode of TOP_SAHAM) {
+        const harga = await getHargaSaham(kode);
+        const saham = getSahamByKode(kode);
+        const existing = container.querySelector(`[data-saham="${kode}"]`);
+        const html = renderSahamRow(kode, saham, harga);
+        if (existing) { existing.outerHTML = html; }
+        else {
+          // Replace first skeleton
+          const skel = container.querySelector('.animate-pulse');
+          if (skel) skel.outerHTML = html;
+          else container.insertAdjacentHTML('beforeend', html);
+        }
+        await new Promise(r => setTimeout(r, 100));
+      }
+      // Remove remaining skeletons
+      container.querySelectorAll('.animate-pulse').forEach(el => el.remove());
+    }
+
+    function renderSahamRow(kode, saham, harga) {
+      const nama = saham ? saham.nama : kode;
+      const hargaText = harga ? formatRupiah(harga.harga) : '—';
+      const changeHTML = harga ? renderPerubahanHarga(harga) : '<span class="text-gray-400">—</span>';
+      const statusHTML = renderStatusHarga(harga);
+      return `
+        <div data-saham="${kode}" class="flex items-center gap-3 py-2.5 px-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
+          <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-xs font-bold text-emerald-700 dark:text-emerald-300">${kode}</div>
+          <div class="flex-1 min-w-0"><p class="text-sm font-semibold truncate">${sanitizeInput(nama)}</p><p class="text-[10px] text-gray-400">${saham ? saham.sektor : ''}</p></div>
+          <div class="text-right"><p class="text-sm font-bold font-mono">${hargaText}</p><div class="flex items-center gap-1 justify-end">${changeHTML} ${statusHTML}</div></div>
+        </div>`;
+    }
+
+    async function refreshHargaSaham() {
+      const btn = document.getElementById('btn-refresh-saham');
+      btn.textContent = '⏳ Memuat...'; btn.disabled = true;
+      // Clear cache for top saham
+      const data = getData();
+      TOP_SAHAM.forEach(k => delete data.harga_cache['harga_' + k]);
+      saveData(data);
+      await loadHargaSaham();
+      btn.textContent = '🔄 Refresh'; btn.disabled = false;
+      showToast('Harga saham diperbarui', 'info');
+    }
+
+    function updateSimulasi() {
+      const modal = parseInt(document.getElementById('sim-modal').value);
+      const durasi = parseInt(document.getElementById('sim-durasi').value);
+      document.getElementById('sim-modal-label').textContent = formatRupiah(modal);
+      document.getElementById('sim-durasi-label').textContent = durasi + ' tahun';
+
+      renderChartSimulasi('chart-simulasi', modal, durasi);
+
+      const nilaiRendah = Math.round(modal * Math.pow(1.05, durasi));
+      const nilaiModerat = Math.round(modal * Math.pow(1.10, durasi));
+      const nilaiTinggi = Math.round(modal * Math.pow(1.18, durasi));
+
+      document.getElementById('sim-summary').innerHTML = `
+        <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-xl p-3 text-center"><p class="text-[10px] text-gray-500 mb-1">Konservatif (5%)</p><p class="text-sm font-bold text-emerald-600">${formatRupiah(nilaiRendah)}</p></div>
+        <div class="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-3 text-center"><p class="text-[10px] text-gray-500 mb-1">Moderat (10%)</p><p class="text-sm font-bold text-blue-600">${formatRupiah(nilaiModerat)}</p></div>
+        <div class="bg-amber-50 dark:bg-amber-900/20 rounded-xl p-3 text-center"><p class="text-[10px] text-gray-500 mb-1">Agresif (18%)</p><p class="text-sm font-bold text-amber-600">${formatRupiah(nilaiTinggi)}</p></div>`;
+    }
+  </script>
+</body>
+</html>
