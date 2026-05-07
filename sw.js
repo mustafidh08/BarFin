@@ -1,5 +1,5 @@
-const CACHE_NAME = 'keuangansyariah-v1';
-const DYNAMIC_CACHE = 'keuangansyariah-dynamic-v1';
+const CACHE_NAME = 'keuangansyariah-v2';
+const DYNAMIC_CACHE = 'keuangansyariah-dynamic-v2';
 
 // Daftar aset untuk app shell (Cache-First)
 const ASSETS = [
@@ -53,7 +53,18 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // 1. API Calls (Yahoo Finance via CORS proxy): Network-First
+  // 0. API Internal Vercel (/api/*): Network-Only (JANGAN CACHE!)
+  if (url.pathname.startsWith('/api/')) {
+    event.respondWith(
+      fetch(event.request).catch(() => {
+        // Biarkan frontend API fallback yang menangani jika offline
+        return new Response(JSON.stringify({ error: 'Offline' }), { status: 503 });
+      })
+    );
+    return;
+  }
+
+  // 1. API Calls Eksternal: Network-First
   if (url.hostname.includes('corsproxy.io') || url.hostname.includes('yahoo.com')) {
     event.respondWith(
       fetch(event.request)
