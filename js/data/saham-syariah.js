@@ -5,8 +5,6 @@
 // ============================================================
 
 const SAHAM_SYARIAH = [
-  { kode: "BBRI", nama: "Bank Rakyat Indonesia Tbk", sektor: "Perbankan", indeks: ["ISSI", "JII"], des_periode: "II/2024" },
-  { kode: "BBCA", nama: "Bank Central Asia Tbk", sektor: "Perbankan", indeks: ["ISSI", "JII"], des_periode: "II/2024" },
   { kode: "TLKM", nama: "Telekomunikasi Indonesia Tbk", sektor: "Telekomunikasi", indeks: ["ISSI", "JII"], des_periode: "II/2024" },
   { kode: "ASII", nama: "Astra International Tbk", sektor: "Otomotif", indeks: ["ISSI", "JII"], des_periode: "II/2024" },
   { kode: "UNVR", nama: "Unilever Indonesia Tbk", sektor: "Konsumer", indeks: ["ISSI"], des_periode: "II/2024" },
@@ -15,7 +13,6 @@ const SAHAM_SYARIAH = [
   { kode: "KLBF", nama: "Kalbe Farma Tbk", sektor: "Farmasi", indeks: ["ISSI", "JII"], des_periode: "II/2024" },
   { kode: "INDF", nama: "Indofood Sukses Makmur Tbk", sektor: "Makanan & Minuman", indeks: ["ISSI"], des_periode: "II/2024" },
   { kode: "EXCL", nama: "XL Axiata Tbk", sektor: "Telekomunikasi", indeks: ["ISSI"], des_periode: "II/2024" },
-  { kode: "BMRI", nama: "Bank Mandiri Tbk", sektor: "Perbankan", indeks: ["ISSI", "JII"], des_periode: "II/2024" },
   { kode: "BRIS", nama: "Bank Syariah Indonesia Tbk", sektor: "Perbankan Syariah", indeks: ["ISSI", "JII"], des_periode: "II/2024" },
   { kode: "CPIN", nama: "Charoen Pokphand Indonesia Tbk", sektor: "Peternakan", indeks: ["ISSI", "JII"], des_periode: "II/2024" },
   { kode: "SMGR", nama: "Semen Indonesia Tbk", sektor: "Semen", indeks: ["ISSI", "JII"], des_periode: "II/2024" },

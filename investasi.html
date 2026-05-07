@@ -33,7 +33,7 @@
             <button onclick="refreshHargaSaham()" class="px-3 py-1.5 text-xs font-medium border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition" id="btn-refresh-saham">🔄 Refresh</button>
           </div>
           <div id="saham-list" class="space-y-2"></div>
-          <p class="text-[10px] text-gray-400 mt-4">✅ Terdaftar DES OJK — Periode ${typeof DES_METADATA !== 'undefined' ? DES_METADATA.periode : 'II/2024'} | Update berikutnya: Mei 2025</p>
+          <p id="des-info" class="text-[10px] text-gray-400 mt-4">✅ Terdaftar DES OJK — Periode II/2024 | Update berikutnya: Mei 2025</p>
         </div>
 
         <!-- Simulasi Investasi -->
@@ -88,7 +88,7 @@
       }
     });
 
-    const TOP_SAHAM = ['BBRI','BBCA','TLKM','ASII','ICBP','SIDO','KLBF','BRIS'];
+    const TOP_SAHAM = ['TLKM','ASII','ICBP','UNVR','KLBF','BRIS','PTBA','ANTM'];
 
     async function loadHargaSaham() {
       const container = document.getElementById('saham-list');
