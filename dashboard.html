@@ -71,12 +71,25 @@
   <script src="js/app.js"></script>
   <script src="js/charts.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const data = getData();
+    document.addEventListener('DOMContentLoaded', async () => {
+      let data = getData();
+
+      // Coba ambil nama dari Google jika belum ada nama
+      if (!data.user.nama && typeof getSupabaseUser === 'function') {
+        const user = await getSupabaseUser();
+        if (user && user.user_metadata && user.user_metadata.full_name) {
+          data.user.nama = sanitizeInput(user.user_metadata.full_name);
+          saveData(data);
+        }
+      }
 
       // Onboarding modal (jika belum onboarded)
       if (!data.user.onboarded) {
-        showOnboarding();
+        if (data.user.nama) {
+          showOnboardingStep(2); // Skip Step 1 (Nama) karena sudah dapat dari Google
+        } else {
+          showOnboardingStep(1);
+        }
       }
 
       renderDashboard();
@@ -183,7 +196,12 @@
 
     // ── Onboarding Modal ───────────────────────────────────
     function showOnboarding() {
-      showOnboardingStep(1);
+      const data = getData();
+      if (data.user.nama) {
+        showOnboardingStep(2);
+      } else {
+        showOnboardingStep(1);
+      }
     }
 
     function showOnboardingStep(step) {
