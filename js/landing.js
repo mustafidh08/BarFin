@@ -30,17 +30,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // 2. Initial Hero Animations
   const tlHero = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-  // Sembunyikan elemen sebelum dianimasikan (CSS akan menanganinya, tapi pastikan)
-  gsap.set('.hero-badge, .hero-title, .hero-desc, .hero-buttons, .float-ui-container', { opacity: 0 });
+  // Sembunyikan elemen sebelum dianimasikan
+  gsap.set('.hero-badge, .hero-desc, .hero-buttons', { opacity: 0, y: 20 });
+  gsap.set('.float-ui-container', { opacity: 0, scale: 0.9 });
   gsap.set('.hero-title span', { opacity: 0, y: 30 });
   
   // Animasi berurutan
   tlHero
-    .to('.hero-badge', { opacity: 1, y: 0, duration: 0.6, yFrom: 20 })
+    .to('.hero-badge', { opacity: 1, y: 0, duration: 0.6 })
     .to('.hero-title span', { opacity: 1, y: 0, duration: 0.8, stagger: 0.1 }, "-=0.3")
-    .to('.hero-desc', { opacity: 1, y: 0, duration: 0.8, yFrom: 20 }, "-=0.5")
-    .to('.hero-buttons', { opacity: 1, y: 0, duration: 0.8, yFrom: 20 }, "-=0.6")
-    .to('.float-ui-container', { opacity: 1, scale: 1, duration: 1, scaleFrom: 0.9 }, "-=0.8");
+    .to('.hero-desc', { opacity: 1, y: 0, duration: 0.8 }, "-=0.5")
+    .to('.hero-buttons', { opacity: 1, y: 0, duration: 0.8 }, "-=0.6")
+    .to('.float-ui-container', { opacity: 1, scale: 1, duration: 1 }, "-=0.8");
 
   // 3. Continuous Floating Animation (Yoyo)
   gsap.to('.float-card-1', {
