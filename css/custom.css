@@ -230,6 +230,19 @@ input[type="number"] { -moz-appearance: textfield; }
   mix-blend-mode: lighten;
 }
 
+/* ── Scroll Reveal Animation ─────────────────────────────── */
+.reveal-hidden {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-hidden.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* ── Responsive Sidebar ──────────────────────────────────── */
 @media (max-width: 767px) {
   #sidebar { display: none !important; }
