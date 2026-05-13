@@ -360,6 +360,150 @@ function skeleton(type = 'text', count = 1) {
   return Array(count).fill(templates[type] || templates.text).join('');
 }
 
+// ── Cloud Auto-Sync ────────────────────────────────────────
+let _syncInProgress = false;
+let _syncInterval = null;
+const SYNC_INTERVAL_MS = 5 * 60 * 1000; // 5 menit
+
+/**
+ * Pull data dari cloud dan merge dengan local.
+ * Cloud menang jika data cloud lebih baru.
+ */
+async function pullFromCloud() {
+  if (_syncInProgress) return;
+  if (typeof fetchFromCloud !== 'function') return;
+  _syncInProgress = true;
+  try {
+    const cloudData = await fetchFromCloud();
+    if (cloudData) {
+      // Merge: cloud data menimpa local (cloud = source of truth saat login)
+      const localData = getData();
+      const merged = mergeWithDefaults(cloudData, DEFAULT_DATA);
+      // Pertahankan settings lokal (dark mode, dll)
+      merged.settings = { ...merged.settings, ...localData.settings };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+      console.log('✅ Cloud sync: data pulled successfully');
+    }
+  } catch (err) {
+    console.warn('Cloud pull failed:', err);
+  } finally {
+    _syncInProgress = false;
+  }
+}
+
+/**
+ * Inisialisasi auto-sync: listen auth state, periodic sync.
+ */
+async function initAutoSync() {
+  if (typeof initSupabase !== 'function' || !initSupabase()) return;
+  if (!supabaseClient) return;
+
+  // 1. Pull data dari cloud saat startup (jika user sudah login)
+  const user = await getSupabaseUser();
+  if (user) {
+    await pullFromCloud();
+    // Refresh tampilan setelah pull
+    if (typeof renderDashboard === 'function') renderDashboard();
+  }
+
+  // 2. Listen perubahan auth state (login/logout)
+  supabaseClient.auth.onAuthStateChange(async (event, session) => {
+    console.log('Auth state changed:', event);
+    if (event === 'SIGNED_IN' && session) {
+      // Baru saja login → pull cloud data & hide banner
+      await pullFromCloud();
+      hideSyncBanner();
+      // Push local data ke cloud (jika ada data lokal yg belum ke-sync)
+      const data = getData();
+      await syncToCloud(data);
+      // Refresh UI
+      renderSidebar();
+      if (typeof renderDashboard === 'function') renderDashboard();
+      showToast('✅ Data berhasil disinkronkan!', 'success');
+    } else if (event === 'SIGNED_OUT') {
+      showSyncBanner();
+    }
+  });
+
+  // 3. Periodic sync setiap 5 menit (jika login)
+  if (_syncInterval) clearInterval(_syncInterval);
+  _syncInterval = setInterval(async () => {
+    const currentUser = await getSupabaseUser();
+    if (currentUser) {
+      const data = getData();
+      syncToCloud(data).catch(err => console.warn('Periodic sync failed:', err));
+    }
+  }, SYNC_INTERVAL_MS);
+
+  // 4. Sync saat user meninggalkan halaman
+  window.addEventListener('beforeunload', () => {
+    const data = getData();
+    // Gunakan sendBeacon untuk reliability
+    if (navigator.sendBeacon && typeof getSupabaseUser === 'function') {
+      // sendBeacon tidak bisa pakai Supabase client, jadi kita fire-and-forget
+      syncToCloud(data).catch(() => {});
+    }
+  });
+}
+
+// ── Login/Sync Banner ──────────────────────────────────────
+function showSyncBanner() {
+  // Jangan tampilkan di landing page
+  if (getActivePage() === 'index.html') return;
+  // Jangan tampilkan kalau sudah ada
+  if (document.getElementById('sync-banner')) return;
+
+  const main = document.querySelector('.main-content');
+  if (!main) return;
+
+  const banner = document.createElement('div');
+  banner.id = 'sync-banner';
+  banner.className = 'mb-6 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border border-amber-200 dark:border-amber-800/50 rounded-2xl p-4 flex items-center gap-4 shadow-sm transition-all duration-300';
+  banner.innerHTML = `
+    <div class="flex-shrink-0 w-10 h-10 bg-amber-100 dark:bg-amber-900/40 rounded-xl flex items-center justify-center text-xl">☁️</div>
+    <div class="flex-1 min-w-0">
+      <p class="text-sm font-semibold text-amber-900 dark:text-amber-200">Data kamu saat ini hanya tersimpan di browser</p>
+      <p class="text-xs text-amber-700 dark:text-amber-400 mt-0.5">Yuk buat akun/login agar data aman dan bisa diakses dari HP lain!</p>
+    </div>
+    <div class="flex items-center gap-2 flex-shrink-0">
+      <button onclick="signInWithGoogle()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl transition-colors shadow-sm">Login Google</button>
+      <button onclick="hideSyncBanner()" class="p-1.5 text-amber-400 hover:text-amber-600 dark:hover:text-amber-300 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900/30 transition" title="Tutup">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>`;
+
+  // Insert sebagai elemen pertama di main content
+  main.insertBefore(banner, main.firstChild);
+}
+
+function hideSyncBanner() {
+  const banner = document.getElementById('sync-banner');
+  if (banner) {
+    banner.style.opacity = '0';
+    banner.style.transform = 'translateY(-10px)';
+    setTimeout(() => banner.remove(), 300);
+    // Simpan preferensi dismiss (hanya untuk session ini)
+    sessionStorage.setItem('ks_banner_dismissed', 'true');
+  }
+}
+
+async function checkAndShowBanner() {
+  // Jangan tampilkan di landing page
+  if (getActivePage() === 'index.html') return;
+  // Jangan tampilkan jika sudah di-dismiss session ini
+  if (sessionStorage.getItem('ks_banner_dismissed') === 'true') return;
+
+  // Cek apakah user sudah login
+  if (typeof getSupabaseUser === 'function') {
+    const user = await getSupabaseUser();
+    if (!user) {
+      showSyncBanner();
+    }
+  } else {
+    showSyncBanner();
+  }
+}
+
 // ── Inisialisasi ───────────────────────────────────────────
 function initApp() {
   initDarkMode();
@@ -369,9 +513,13 @@ function initApp() {
 }
 
 // Auto-init saat DOM ready (untuk halaman app, bukan landing)
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   if (getActivePage() !== 'index.html') {
     initApp();
+    // Tampilkan banner jika belum login
+    await checkAndShowBanner();
+    // Inisialisasi auto-sync
+    await initAutoSync();
   }
 });
 
