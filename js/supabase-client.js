@@ -1,8 +1,8 @@
 // ============================================================
-// supabase-client.js — Wrapper Supabase UMD Client
+// supabase-client.js — Wrapper Supabase UMD Client (Hardened)
 // ============================================================
 
-// TODO: Ganti dengan URL dan Anon Key dari project Supabase-mu
+// Supabase Config — Anon Key is safe to expose (RLS protects data)
 const SUPABASE_URL = 'https://xdghpmxvgbvdtmnamofe.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkZ2hwbXh2Z2J2ZHRtbmFtb2ZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwNjcxOTMsImV4cCI6MjA5MzY0MzE5M30.rv9toqhPIHq8sD80UIRDKWYh9-lb9avEs9vXJN9aW9E';
 
@@ -15,8 +15,13 @@ function initSupabase() {
       console.warn('Supabase URL/Key belum dikonfigurasi.');
       return false;
     }
-    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    console.log('Supabase initialized');
+    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: {
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true
+      }
+    });
     return true;
   }
   return !!supabaseClient;
@@ -25,12 +30,17 @@ function initSupabase() {
 // Cek apakah user saat ini sedang login
 async function getSupabaseUser() {
   if (!initSupabase()) return null;
-  const { data: { session }, error } = await supabaseClient.auth.getSession();
-  if (error) {
-    console.error('Error getting session:', error);
+  try {
+    const { data: { session }, error } = await supabaseClient.auth.getSession();
+    if (error) {
+      console.error('Error getting session:', error.message);
+      return null;
+    }
+    return session ? session.user : null;
+  } catch (err) {
+    console.error('getSupabaseUser exception:', err.message);
     return null;
   }
-  return session ? session.user : null;
 }
 
 // Fungsi Login menggunakan Google OAuth
@@ -46,8 +56,8 @@ async function signInWithGoogle() {
     }
   });
   if (error) {
-    console.error('Google Sign-In Error:', error);
-    showToast('Gagal login: ' + error.message, 'error');
+    console.error('Google Sign-In Error:', error.message);
+    showToast('Gagal login. Silakan coba lagi.', 'error');
   }
 }
 
@@ -56,8 +66,8 @@ async function signOutSupabase() {
   if (!initSupabase()) return;
   const { error } = await supabaseClient.auth.signOut();
   if (error) {
-    console.error('Sign Out Error:', error);
-    showToast('Gagal logout: ' + error.message, 'error');
+    console.error('Sign Out Error:', error.message);
+    showToast('Gagal logout. Silakan coba lagi.', 'error');
   } else {
     showToast('Berhasil logout', 'success');
     setTimeout(() => {
@@ -72,18 +82,27 @@ async function fetchFromCloud() {
   const user = await getSupabaseUser();
   if (!user) return null;
 
-  const { data, error } = await supabaseClient
-    .from('user_data')
-    .select('data')
-    .eq('user_id', user.id)
-    .single();
+  try {
+    const { data, error } = await supabaseClient
+      .from('user_data')
+      .select('data')
+      .eq('user_id', user.id)
+      .single();
 
-  if (error && error.code !== 'PGRST116') { // PGRST116 = not found (belum ada data)
-    console.error('Fetch cloud data error:', error);
+    if (error && error.code !== 'PGRST116') { // PGRST116 = not found (belum ada data)
+      console.error('Fetch cloud data error:', error.message);
+      return null;
+    }
+
+    // Security: Validasi bahwa data yang diterima adalah object
+    if (data && data.data && typeof data.data === 'object') {
+      return data.data;
+    }
+    return null;
+  } catch (err) {
+    console.error('fetchFromCloud exception:', err.message);
     return null;
   }
-
-  return data ? data.data : null;
 }
 
 // Simpan data ke cloud
@@ -92,18 +111,30 @@ async function syncToCloud(appData) {
   const user = await getSupabaseUser();
   if (!user) return false; // Jangan sync jika belum login
 
-  // Hindari menyimpan cache_harga yang besar ke cloud
-  const cloudData = { ...appData };
-  delete cloudData.harga_cache;
+  try {
+    // Security: Hindari menyimpan cache dan data sensitif ke cloud
+    const cloudData = { ...appData };
+    delete cloudData.harga_cache;
 
-  const { error } = await supabaseClient
-    .from('user_data')
-    .upsert({ user_id: user.id, data: cloudData }, { onConflict: 'user_id' });
+    // Security: Validasi ukuran data sebelum upload (max 1MB)
+    const dataSize = new Blob([JSON.stringify(cloudData)]).size;
+    if (dataSize > 1024 * 1024) {
+      console.warn('Data terlalu besar untuk sync:', dataSize, 'bytes');
+      return false;
+    }
 
-  if (error) {
-    console.error('Sync to cloud error:', error);
+    const { error } = await supabaseClient
+      .from('user_data')
+      .upsert({ user_id: user.id, data: cloudData }, { onConflict: 'user_id' });
+
+    if (error) {
+      console.error('Sync to cloud error:', error.message);
+      return false;
+    }
+
+    return true;
+  } catch (err) {
+    console.error('syncToCloud exception:', err.message);
     return false;
   }
-
-  return true;
 }
